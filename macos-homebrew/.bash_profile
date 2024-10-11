@@ -1,27 +1,22 @@
-eval export HOMEBREW_PREFIX="/opt/homebrew";
-eval "$($HOMEBREW_PREFIX/bin/brew shellenv)";
+base=$( dirname $(realpath ~/.bash_profile) )
 
-# Setup autocompletion
-if type brew &>/dev/null
-then
-  HOMEBREW_PREFIX="$(brew --prefix)"
-  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
-  then
-    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-  else
-    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
-    do
-      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
-    done
-  fi
-fi
+### Load file with variables
+source $base/.variables.sh
 
-# Display git branch inline
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]$ "
+### Load file with user variables
+source ~/.variables.sh
 
-# Set nano as default editor
-export EDITOR=nano
-export VISUAL="$EDITOR"
+### Load file with aliases
+source $base/.aliases.sh
+
+### Load file with user aliases
+source ~/.aliases.sh
+
+### Load prompt definition
+source $base/.prompt.sh
+
+### Load file .bashrc
+[ -s ~/.bashrc ] && source ~/.bashrc
+
+### Load bash completions
+source $base/bash_completions.sh

@@ -37,11 +37,21 @@ __link_file() {
     ln -s $file1 $file2
 }
 
+__create_file() {
+    file=${1}
+    if ! [ -f "$file" ] ; then
+        __print_line_add "Create file: $file"
+    fi
+    touch $file
+}
+
 __install_macos_homebrew() {
     path="$base/macos-homebrew"
     __print_line_info "Installing macos-homebrew\n"
     __link_file $path/.bash_profile ~/.bash_profile
     __link_file $path/.bashrc ~/.bashrc
+    __create_file ~/.aliases.sh
+    __create_file ~/.variables.sh
 }
 
 __menu_choice() {
